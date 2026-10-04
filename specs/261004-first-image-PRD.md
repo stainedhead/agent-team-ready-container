@@ -1,6 +1,6 @@
 # First development base image PRD
 
-**Status:** implementation draft. This document defines the first build and its release gates; passing the gates is required before the image or skill can claim a verified tool inventory.
+**Status:** implementation draft. The [first native CI run](https://github.com/stainedhead/agent-team-ready-container/actions/runs/37215901006) passed build and smoke tests on amd64 and arm64. This document defines the remaining release gates; passing them is required before the image or skill can claim a released, verified tool inventory.
 
 ## Purpose and boundary
 
@@ -50,6 +50,8 @@ Version numbers above are initial build inputs. CI records the resolved versions
 4. The harness and Paperclip images build from a digest-pinned version of the new base. Their existing smoke suite passes on both architectures, including their entrypoints and UID assumptions.
 5. The separate browser research deployment passes isolation and sandbox checks on local macOS container and AWS targets.
 6. The owning repository opens a pull request to update `agentic-teams/skills/agent-team-ready-container.md` with the verified inventory and installation commands. The status banner stays until a released image and its examples have been tested.
+
+Gates 1–3 passed in the first native CI run. Gates 4–6 remain open. The passing CI images were local to their runners and were not published or tested on a deployment target.
 
 ## First implementation scope
 
