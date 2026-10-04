@@ -1,6 +1,6 @@
 # First development base image PRD
 
-**Status:** implementation draft. The [first native CI run](https://github.com/stainedhead/agent-team-ready-container/actions/runs/37215901006) passed build and smoke tests on amd64 and arm64. This document defines the remaining release gates; passing them is required before the image or skill can claim a released, verified tool inventory.
+**Status:** implementation draft. The [latest native CI run](https://github.com/stainedhead/agent-team-ready-container/actions/runs/37219853532) passed build, package-install and sandboxed browser smoke tests on amd64 and arm64. This document defines the remaining release gates; passing them is required before the image or skill can claim a released, verified tool inventory.
 
 ## Purpose and boundary
 
@@ -51,7 +51,7 @@ Version numbers above are initial build inputs. CI records the resolved versions
 5. The separate browser research deployment passes isolation and sandbox checks on local macOS container and AWS targets.
 6. The owning repository opens a pull request to update `agentic-teams/skills/agent-team-ready-container.md` with the verified inventory and installation commands. The status banner stays until a released image and its examples have been tested.
 
-Gates 1–3 passed in the first native CI run. A local macOS ARM64 run also launched Chromium with `chromiumSandbox: true` and confirmed a renderer entered a separate Linux user namespace under the version-matched Playwright seccomp profile. That container reached `https://example.com` without an agent workspace or credentials mounted. CI coverage for this browser profile is pending; gate 5 still needs the actual research service and AWS deployment checks. Gates 4 and 6 also remain open. No image has been published.
+Gates 1–3 passed in native CI on both architectures. The same CI run also launched Chromium with `chromiumSandbox: true` and confirmed a renderer entered a separate Linux user namespace under the version-matched Playwright seccomp profile. A local macOS ARM64 container reached `https://example.com` without an agent workspace or credentials mounted. Gate 5 still needs the actual research service and AWS deployment checks. Gate 4 remains open; the gate 6 [root skill PR](https://github.com/stainedhead/agentic-teams/pull/3) is open for review. No image has been published.
 
 ## First implementation scope
 
