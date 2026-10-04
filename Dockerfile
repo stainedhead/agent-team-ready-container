@@ -2,7 +2,7 @@
 ARG BASE_IMAGE=mcr.microsoft.com/devcontainers/cpp:3-trixie
 FROM ${BASE_IMAGE}
 
-USER root
+USER 0:0
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive \
     PLAYWRIGHT_BROWSERS_PATH=/opt/playwright-browsers
