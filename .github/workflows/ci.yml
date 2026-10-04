@@ -1,0 +1,66 @@
+name: image-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.4.0
+        with:
+          dockerfile: Dockerfile
+          ignore: DL3008,DL3013
+      - name: Shell syntax and lint
+        run: |
+          bash -n tests/smoke.sh
+          sudo apt-get update -qq
+          sudo apt-get install -y shellcheck
+          shellcheck tests/smoke.sh
+
+  smoke-build:
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build native image
+        run: docker buildx build --load --platform linux/${{ matrix.arch }} -t agent-team-ready-container:ci .
+      - name: Toolchain and browser smoke test
+        run: |
+          docker run --rm --ipc=host \
+            -v "$PWD/tests:/tests:ro" \
+            agent-team-ready-container:ci \
+            bash /tests/smoke.sh
+      - name: Runtime package installation smoke test
+        run: |
+          docker run --rm --ipc=host \
+            -e INSTALL_SMOKE=1 \
+            -v "$PWD/tests:/tests:ro" \
+            agent-team-ready-container:ci \
+            bash /tests/smoke.sh
+      - name: Sandboxed browser smoke test
+        run: |
+          docker run --rm --init --shm-size=1g --read-only \
+            --tmpfs /tmp:rw,nosuid,size=1g \
+            --cap-drop=ALL --cap-add=SYS_CHROOT \
+            --security-opt=no-new-privileges \
+            --security-opt seccomp="$PWD/config/playwright-seccomp.json" \
+            -v "$PWD/tests/browser-sandbox.js:/tests/browser-sandbox.js:ro" \
+            agent-team-ready-container:ci \
+            node /tests/browser-sandbox.js
