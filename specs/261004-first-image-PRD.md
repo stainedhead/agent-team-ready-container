@@ -51,7 +51,7 @@ Version numbers above are initial build inputs. CI records the resolved versions
 5. The separate browser research deployment passes isolation and sandbox checks on local macOS container and AWS targets.
 6. The owning repository opens a pull request to update `agentic-teams/skills/agent-team-ready-container.md` with the verified inventory and installation commands. The status banner stays until a released image and its examples have been tested.
 
-Gates 1–3 passed in the first native CI run. Gates 4–6 remain open. The passing CI images were local to their runners and were not published or tested on a deployment target.
+Gates 1–3 passed in the first native CI run. A local macOS ARM64 run also launched Chromium with `chromiumSandbox: true` and confirmed a renderer entered a separate Linux user namespace under the version-matched Playwright seccomp profile. That container reached `https://example.com` without an agent workspace or credentials mounted. CI coverage for this browser profile is pending; gate 5 still needs the actual research service and AWS deployment checks. Gates 4 and 6 also remain open. No image has been published.
 
 ## First implementation scope
 

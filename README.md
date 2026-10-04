@@ -17,3 +17,19 @@ docker run --rm --ipc=host -v "$PWD/tests:/tests:ro" agent-team-ready-container:
 The image starts as UID/GID 1000 in `/workspace`. It has no harness entrypoint. Common project package managers write to that user's workspace or home. For task-specific Debian packages, use `sudo apt-get` inside a disposable task container. Such additions disappear with the container unless the image is rebuilt; do not mount a host Docker socket or credentials into an install-capable task container.
 
 Use Playwright's bundled Chromium for application tests. External-site research requires a separate browser container without agent files or credentials, plus a verified browser sandbox. That deployment path is an open release gate; the installed browser alone does not establish it. See the [PRD](specs/261004-first-image-PRD.md) for the full release criteria.
+
+## Check the research browser sandbox
+
+`config/playwright-seccomp.json` is the [Playwright 1.63.0 Docker profile](https://github.com/microsoft/playwright/blob/v1.63.0/utils/docker/seccomp_profile.json). It permits the user namespace operations Chromium needs for its sandbox. Run a separate, disposable browser container with only the script mounted:
+
+```bash
+docker run --rm --init --shm-size=1g --read-only \
+  --tmpfs /tmp:rw,nosuid,size=1g \
+  --cap-drop=ALL --cap-add=SYS_CHROOT \
+  --security-opt=no-new-privileges \
+  --security-opt seccomp="$PWD/config/playwright-seccomp.json" \
+  -v "$PWD/tests/browser-sandbox.js:/tests/browser-sandbox.js:ro" \
+  agent-team-ready-container:dev node /tests/browser-sandbox.js
+```
+
+This checks that Playwright launches with `chromiumSandbox: true` and that a renderer enters a separate Linux user namespace. It does not establish an isolated research service: the harness deployment must launch that service without the agent workspace or credentials and restrict its network access. The AWS deployment check remains open.
