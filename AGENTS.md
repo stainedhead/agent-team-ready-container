@@ -6,14 +6,14 @@ Rules for AI agents and human contributors working in this repository.
 
 `agent-team-ready-container` will build and publish a general development base image for the agentic-teams set. Its intended toolchains are C++23, Rust, Go, Java 25, Python, C#, and TypeScript 7, plus common CLIs, package managers (including Bun), Playwright and a compatible Chrome browser. `agentic-team-w-paperclip` will consume this base and remains responsible for Hermes, OMP, OpenCode and Paperclip.
 
-**Current status:** documentation scaffold only. No Dockerfile, CI, image or PRD exists yet. Do not describe an intended tool as installed or tested. Read [INTENT.md](INTENT.md) for the purpose and scope before designing the image.
+**Current status:** first image implementation in progress. The Dockerfile, CI smoke tests and [first-image PRD](specs/261004-first-image-PRD.md) exist, but no image is published or verified yet. Do not describe a tool as installed or tested until the native CI build passes. Read [INTENT.md](INTENT.md) for the purpose and scope.
 
 ## Documentation routing
 
 | Change | Home |
 |---|---|
 | Purpose, goals or scope boundary | `INTENT.md` |
-| Detailed requirements and acceptance criteria | The PRD, once created under `specs/` |
+| Detailed requirements and acceptance criteria | `specs/261004-first-image-PRD.md` |
 | Architectural decisions and implementation notes | `docs/`, when needed |
 | Build, configuration and use instructions | `user-docs/`, when a usable image exists |
 | Newcomer orientation and actual status | `README.md` |
