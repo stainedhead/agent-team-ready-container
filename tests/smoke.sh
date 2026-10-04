@@ -28,6 +28,7 @@ gh --version | head -1
 aws --version
 chromium --version
 playwright --version
+test "$(printf 'value: ready\n' | yq '.value')" = ready
 
 test_dir=$(mktemp -d /workspace/image-smoke.XXXXXX)
 trap 'rm -rf "$test_dir"' EXIT

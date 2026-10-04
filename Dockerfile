@@ -1,5 +1,5 @@
-# First development base. The release workflow must replace the tag with an immutable digest.
-ARG BASE_IMAGE=mcr.microsoft.com/devcontainers/cpp:3-trixie
+# First development base. Pin the multi-platform upstream manifest digest.
+ARG BASE_IMAGE=mcr.microsoft.com/devcontainers/cpp:3-trixie@sha256:06e59c756f0b90728dd87e4b96cb93d923a6c7863d580976363fb492f77ba001
 FROM ${BASE_IMAGE}
 
 USER 0:0
@@ -16,6 +16,7 @@ ARG TYPESCRIPT_VERSION=7.0.2
 ARG PLAYWRIGHT_VERSION=1.63.0
 ARG BUN_VERSION=1.4.2
 ARG PNPM_VERSION=10.18.3
+ARG YQ_VERSION=4.54.1
 
 # Debian supplies the general CLIs and build dependencies on both supported architectures.
 # Package versions are recorded by the smoke test; release builds pin the base and image digest.
@@ -23,9 +24,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       apt-transport-https awscli bash ca-certificates chromium curl fd-find git git-lfs \
       gnupg gh jq libatomic1 libssl-dev lsof maven netcat-openbsd ninja-build \
       openssh-client openssl pipx pkg-config procps python3 python3-pip python3-venv \
-      ripgrep rsync shellcheck sqlite3 sudo tar tree unzip wget xz-utils yq zip zlib1g-dev \
+      ripgrep rsync shellcheck sqlite3 sudo tar tree unzip wget xz-utils zip zlib1g-dev \
     && ln -s /usr/bin/fdfind /usr/local/bin/fd \
     && rm -rf /var/lib/apt/lists/*
+
+# The Paperclip harness expects mikefarah/yq scalar output, not Debian's jq wrapper.
+# SHA-256 values are from the v4.54.1 release checksums asset.
+RUN case "${TARGETARCH}" in \
+      amd64) yq_sha=8e34fc298390875de416e6a4afcb8cabeceb25d9aa8506c1a2f9353cf702ea5f ;; \
+      arm64) yq_sha=189088da0c6429ec5178dfaab1a114805f6cab0b61b165ab236efedf1d57a71b ;; \
+      *) exit 1 ;; \
+    esac \
+    && curl -fsSLo /usr/local/bin/yq "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_${TARGETARCH}" \
+    && echo "${yq_sha}  /usr/local/bin/yq" | sha256sum -c - \
+    && chmod +x /usr/local/bin/yq
 
 # Node's published checksum protects the architecture-specific archive.
 RUN case "${TARGETARCH}" in amd64) node_arch=x64 ;; arm64) node_arch=arm64 ;; *) exit 1 ;; esac \

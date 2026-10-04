@@ -8,7 +8,7 @@ Ship a reusable Linux development base for the agentic-teams harness images. Thi
 
 ## Decisions
 
-1. Derive from `mcr.microsoft.com/devcontainers/cpp:3-trixie`. It supplies the C++ toolchain, vcpkg, and a UID 1000 `vscode` user. Record the resolved base digest for each architecture in release evidence; use an immutable digest for a release build.
+1. Derive from `mcr.microsoft.com/devcontainers/cpp:3-trixie`. It supplies the C++ toolchain, vcpkg, and a UID 1000 `vscode` user. The Dockerfile pins the multi-platform manifest digest `sha256:06e59c756f0b90728dd87e4b96cb93d923a6c7863d580976363fb492f77ba001`; record the resolved per-architecture digests in release evidence.
 2. The runtime user is UID/GID 1000. Language package managers install project dependencies as that user. Their caches and user bin directories must be writable. `sudo apt-get` is available for task-specific Debian packages inside a disposable container. This grants root **inside that container**; deployment must not mount the host Docker socket, host credentials, or broad host directories. A task's OS additions live only as long as its container unless an owner bakes them into a derived image.
 3. Include Playwright's matching Chromium browser for application tests and Debian Chromium as a general browser command. Playwright 1.63 supports a Chrome for Testing Chromium build on Linux Arm64 as well as amd64. External-site research uses a separate browser container built from this image with no workspace or credentials mounted. The browser sandbox and deployment profile must pass an explicit integration gate before external-site research is described as safe.
 4. Build native `linux/amd64` and `linux/arm64` variants. Validate both architectures as UID 1000 and publish only after both pass. The first implementation PR runs CI builds but does not publish an image.
@@ -25,7 +25,7 @@ Ship a reusable Linux development base for the agentic-teams harness images. Thi
 | Python | Debian Python 3, `venv`, `pip`, `pipx`, `uv` | Create a venv and install a package as UID 1000 |
 | C# | .NET SDK 10 | Create and run a console project as UID 1000 |
 | JavaScript / TypeScript | Node 24, npm, pnpm, Bun 1.4.2, TypeScript 7 | Add a dependency with Bun and compile TypeScript |
-| Common CLI | `git`, `gh`, `aws`, `curl`, `wget`, `jq`, `yq`, `rg`, `fd`, SSH client, archive and diagnostic tools | Find each command and print its version |
+| Common CLI | `git`, `gh`, `aws`, `curl`, `wget`, `jq`, mikefarah/yq 4.54.1, `rg`, `fd`, SSH client, archive and diagnostic tools | Find each command and print its version; check `yq` scalar output for harness compatibility |
 | Browser | Chromium and Playwright 1.63 with its matching Chromium download | Launch browser as UID 1000 and load a local page |
 
 Version numbers above are initial build inputs. CI records the resolved versions. Package repository updates may change minor versions; a release must pin or lock inputs and record image digests. Homebrew is not included on Linux: Debian `apt` supplies system packages and the language package managers supply project packages.
