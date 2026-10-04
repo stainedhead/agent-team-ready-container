@@ -10,7 +10,7 @@ This repository owns the development toolchain layer. [agentic-team-w-paperclip]
 
 ## Goals
 
-- **Start ready for polyglot development.** Include working C++23, Rust, Go, Java 25, Python, C#, and TypeScript 7 toolchains, with their normal build and package managers.
+- **Start ready for polyglot development.** Include working C++23, Rust, Go, Java 25, Python, C#, and TypeScript 7 toolchains, with their normal build and package managers. Include Bun alongside npm and pnpm for JavaScript and TypeScript projects.
 - **Include common agent tools.** Provide `git`, `gh`, `aws`, and other general development utilities needed by the harness images. Include Playwright and a compatible Chrome browser for application testing and research on external sites.
 - **Allow additions during a task.** An agent must be able to install open-source project dependencies, test frameworks and tools needed to complete its work. Provide working package managers, writable caches and an installation path for dependencies that require system packages. The PRD must define how these additions persist and how system-level installation works without granting unrestricted host access.
 - **Work where the current images work.** Preserve Linux `amd64` and `arm64` builds for local Apple Silicon and AWS deployment, and run the agent as an unprivileged user.

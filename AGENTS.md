@@ -4,7 +4,7 @@ Rules for AI agents and human contributors working in this repository.
 
 ## Project summary
 
-`agent-team-ready-container` will build and publish a general development base image for the agentic-teams set. Its intended toolchains are C++23, Rust, Go, Java 25, Python, C#, and TypeScript 7, plus common CLIs, package managers, Playwright and a compatible Chrome browser. `agentic-team-w-paperclip` will consume this base and remains responsible for Hermes, OMP, OpenCode and Paperclip.
+`agent-team-ready-container` will build and publish a general development base image for the agentic-teams set. Its intended toolchains are C++23, Rust, Go, Java 25, Python, C#, and TypeScript 7, plus common CLIs, package managers (including Bun), Playwright and a compatible Chrome browser. `agentic-team-w-paperclip` will consume this base and remains responsible for Hermes, OMP, OpenCode and Paperclip.
 
 **Current status:** documentation scaffold only. No Dockerfile, CI, image or PRD exists yet. Do not describe an intended tool as installed or tested. Read [INTENT.md](INTENT.md) for the purpose and scope before designing the image.
 
@@ -33,6 +33,7 @@ Keep claims about shipped tools and supported architectures tied to build or run
 - Build and test both `linux/amd64` and `linux/arm64`; the current consumer publishes both.
 - Run the final image as a non-root user. Verify ownership, writable caches, and tools on `PATH` after the privilege drop.
 - Verify representative compilation or execution for every advertised language, including a C++23 feature and the declared TypeScript major version. Verify Playwright can launch the installed browser.
+- Verify `bun add --dev` can add a development dependency as the unprivileged agent on both supported architectures, and that its cache and executable path are writable and reachable.
 - Verify browser use for both application tests and external research. External sites are untrusted; the browser process must not inherit agent credentials or gain access to unrelated agent data. Test the browser sandbox on each deployment target.
 - Pin or record upstream image and tool versions so a rebuild is explainable. Do not silently rely on an installer changing what it supplies.
 - Define a workable runtime path for dependencies that need OS packages, as well as user-level package managers. Do not assume `apt` or another system package manager works for the unprivileged agent.
