@@ -26,15 +26,16 @@ Keep claims about shipped tools and supported architectures tied to build or run
 - Make and commit base-image changes here, never in the documentation-only `agentic-teams` root.
 - Make changes to Hermes, OMP, OpenCode, Paperclip, their entrypoints and their configuration in `agentic-team-w-paperclip`.
 - Keep the base independent of deployment-specific identities, credentials and tenant settings. Never commit tokens, keys, passwords or real tenant identifiers.
-- Do not give the runtime user unrestricted root or host access merely to support package installation. Define and test the allowed runtime installation path in the PRD.
+- Agents must be able to install open-source project dependencies, test frameworks and task-specific tools while running. Do not give the runtime user unrestricted host access merely to support installation. Define and test both user-level and system-package installation paths in the PRD.
 
 ## Engineering expectations for the future image
 
 - Build and test both `linux/amd64` and `linux/arm64`; the current consumer publishes both.
 - Run the final image as a non-root user. Verify ownership, writable caches, and tools on `PATH` after the privilege drop.
 - Verify representative compilation or execution for every advertised language, including a C++23 feature and the declared TypeScript major version. Verify Playwright can launch the installed browser.
+- Verify browser use for both application tests and external research. External sites are untrusted; the browser process must not inherit agent credentials or gain access to unrelated agent data. Test the browser sandbox on each deployment target.
 - Pin or record upstream image and tool versions so a rebuild is explainable. Do not silently rely on an installer changing what it supplies.
-- Keep OS package installation at build time unless the PRD explicitly defines a constrained runtime mechanism. Do not assume `apt` or another system package manager works for the unprivileged agent.
+- Define a workable runtime path for dependencies that need OS packages, as well as user-level package managers. Do not assume `apt` or another system package manager works for the unprivileged agent.
 - Test the derived harness images before declaring a new base compatible with them.
 
 These are design constraints, not claims that implementation or tests already exist. The PRD will specify concrete commands and release gates.
