@@ -6,7 +6,7 @@ Rules for AI agents and human contributors working in this repository.
 
 `agent-team-ready-container` will build and publish a general development base image for the agentic-teams set. Its intended toolchains are C++23, Rust, Go, Java 25, Python, C#, and TypeScript 7, plus common CLIs, package managers (including Bun), Playwright and a compatible Chrome browser. `agentic-team-w-paperclip` will consume this base and remains responsible for Hermes, OMP, OpenCode and Paperclip.
 
-**Current status:** first image implementation in progress. The Dockerfile, CI smoke tests and [first-image PRD](specs/261004-first-image-PRD.md) exist. The [latest native CI build](https://github.com/stainedhead/agent-team-ready-container/actions/runs/37219853532) passed on amd64 and arm64, including a sandboxed browser check. No image is published, and the harness and browser deployment gates remain open. Describe only the tools exercised by that CI run as verified in a CI-built image. Read [INTENT.md](INTENT.md) for the purpose and scope.
+**Current status:** first image implementation in progress. The Dockerfile, CI smoke tests and [first-image PRD](specs/261004-first-image-PRD.md) exist. The [latest native CI build](https://github.com/stainedhead/agent-team-ready-container/actions/runs/37220921500) passed on amd64 and arm64, including a sandboxed browser check. No image is published, and the harness and browser deployment gates remain open. Describe only the tools exercised by that CI run as verified in a CI-built image. Read [INTENT.md](INTENT.md) for the purpose and scope.
 
 ## Documentation routing
 

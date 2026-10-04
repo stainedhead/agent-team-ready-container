@@ -1,6 +1,6 @@
 # First development base image PRD
 
-**Status:** implementation draft. The [latest native CI run](https://github.com/stainedhead/agent-team-ready-container/actions/runs/37219853532) passed build, package-install and sandboxed browser smoke tests on amd64 and arm64. This document defines the remaining release gates; passing them is required before the image or skill can claim a released, verified tool inventory.
+**Status:** implementation draft. The [latest native CI run](https://github.com/stainedhead/agent-team-ready-container/actions/runs/37220921500) passed build, package-install and sandboxed browser smoke tests on amd64 and arm64. This document defines the remaining release gates; passing them is required before the image or skill can claim a released, verified tool inventory.
 
 ## Purpose and boundary
 
@@ -52,6 +52,8 @@ Version numbers above are initial build inputs. CI records the resolved versions
 6. The owning repository opens a pull request to update `agentic-teams/skills/agent-team-ready-container.md` with the verified inventory and installation commands. The status banner stays until a released image and its examples have been tested.
 
 Gates 1–3 passed in native CI on both architectures. The same CI run also launched Chromium with `chromiumSandbox: true` and confirmed a renderer entered a separate Linux user namespace under the version-matched Playwright seccomp profile. A local macOS ARM64 container reached `https://example.com` without an agent workspace or credentials mounted. Gate 5 still needs the actual research service and AWS deployment checks. Gate 4 remains open; the gate 6 [root skill PR](https://github.com/stainedhead/agentic-teams/pull/3) is open for review. No image has been published.
+
+A disposable ARM64 harness prototype derived from this base passed CLI and bootstrap checks. A derived Paperclip prototype using `paperclipai@2026.1001.0` passed doctor, initialized embedded PostgreSQL, and returned a healthy API response after `paperclipai onboard --yes --run`. Its global npm prefix had to be outside `/home/vscode/.local`: Paperclip treats a shim at `/home/vscode/.local/bin/paperclipai` as a managed-install artifact and fails doctor when the matching manifest is absent. The prototype used `/opt/paperclip-npm`. The harness repository and both-architecture CI have not yet been switched over.
 
 ## First implementation scope
 
