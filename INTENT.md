@@ -16,7 +16,7 @@ This repository owns the development toolchain layer. [agentic-team-w-paperclip]
 - **Work where the current images work.** Preserve Linux `amd64` and `arm64` builds for local Apple Silicon and AWS deployment, and run the agent as an unprivileged user.
 - **Be reproducible and verifiable.** Pin or otherwise control the base and tool versions, test the actual command paths and representative builds on both architectures, and publish images with clear provenance.
 - **Isolate external browsing.** Let agents research public sites while keeping browser processes and visited content away from credentials and other agent data. Verify the browser's sandbox in each deployment target.
-- **Teach agents what the image provides.** Maintain an agent skill in the documentation-only root repository's `skills/agent-team-ready-container.md`. It must identify verified preinstalled tools and explain the supported paths for adding tooling during a task.
+- **Teach agents what the image provides.** Publish an agent skill by pull request to the documentation-only root repository's `skills/agent-team-ready-container.md`, following the other tool repositories' process. It must identify verified preinstalled tools and explain the supported paths for adding tooling during a task.
 
 ## Starting direction
 

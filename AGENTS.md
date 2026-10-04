@@ -26,7 +26,7 @@ Keep claims about shipped tools and supported architectures tied to build or run
 - Make and commit base-image changes here, never in the documentation-only `agentic-teams` root.
 - Make changes to Hermes, OMP, OpenCode, Paperclip, their entrypoints and their configuration in `agentic-team-w-paperclip`.
 - Keep the base independent of deployment-specific identities, credentials and tenant settings. Never commit tokens, keys, passwords or real tenant identifiers.
-- Maintain the agent-facing skill at `agentic-teams/skills/agent-team-ready-container.md`, not as a copy here. Its initial status-marked draft is proposed in the root repository; update it in the same change cycle as tool inventory, package installation paths or browser usage, and keep its status banner until a released image and its examples have been verified.
+- Publish the agent-facing skill to `agentic-teams/skills/agent-team-ready-container.md` through a pull request to the root repository, following the same manual skill-publication process as the other tool repositories. Do not keep a copy here. Its initial status-marked draft is proposed in the root repository; open a root skill PR in the same change cycle as changes to the tool inventory, package installation paths or browser usage. Keep its status banner until a released image and its examples have been verified.
 - Agents must be able to install open-source project dependencies, test frameworks and task-specific tools while running. Do not give the runtime user unrestricted host access merely to support installation. Define and test both user-level and system-package installation paths in the PRD.
 
 ## Engineering expectations for the future image
