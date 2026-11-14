@@ -33,3 +33,7 @@ docker run --rm --init --shm-size=1g --read-only \
 ```
 
 This checks that Playwright launches with `chromiumSandbox: true` and that a renderer enters a separate Linux user namespace. It does not establish an isolated research service: the harness deployment must launch that service without the agent workspace or credentials and restrict its network access. The AWS deployment check remains open.
+
+## License
+
+The Dockerfile, tests and documentation in this repository are [MIT licensed](LICENSE). The base image and tools it installs retain their own licenses; review those terms before redistributing a built image. The copied Playwright seccomp profile is attributed in [config/NOTICE.md](config/NOTICE.md).
